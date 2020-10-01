@@ -1,0 +1,8 @@
+/scdf-custom-source/scdf-custom-source.iml
+/scdf-custom-modules-parent.iml
+/scdf-custom-sink/scdf-custom-sink.iml
+/scdf-custom-processor/scdf-custom-processor.iml
+/scdf-custom-processor/target/
+/scdf-custom-sink/target/
+/scdf-custom-source/target/
+/.idea/
