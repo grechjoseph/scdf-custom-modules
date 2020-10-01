@@ -122,105 +122,100 @@ The three applications are:
     <li>Open/click the stream from the list of streams.</li>
     <li>If the logs have not been enabled yet, wait until the Stream has status <b>Deployed.</b></li>
     <li>Once logs are accessible, verify that the Scdf-Custom-Source application is logging sending the messages, Scdf-Custom-Processor is logging transforming the message, and that the Scdf-Custom-Sink application is logging the received messages (should include value <b>Hello World!</b> as per config). Lastly, verify that the Sink is publishing the acknowledgement message, and the Source is receiving it.</li>
-</ul>]
+</ul>
 
 <h2 id="h2_custom_queue_bindings">Custom Queue Bindings</h2>
 In order to send messages to custom exchanges and queues, rather than the default "input" / "output" queues:
 
 <h3 id="h3_output">Output:</h3>
-<ol>
-    <li>
-        Prepare properties to bind to a custom exchange and queue, such as
-        <code>
-        spring:
-          cloud:
-            stream:
-              bindings:
-                sink-output:
-                  destination: sink
-                  producer:
-                    requiredGroups: sink.output
-        </code>
-    </li>
-    <li>
-        Create a Channel Interface, such as:
-        <code>
-        public interface SinkOutput {
-        
-            String OUTPUT = "sink-output";
-        
-            @Output(OUTPUT)
-            MessageChannel output();
-        
-        }
-        </code>
-    </li>
-    <li>
-        Create a Service, such as:
-        <code>
-        @RequiredArgsConstructor
-        @EnableBinding({SinkOutput.class})
-        public class MessagingService {
-        
-            private final SinkOutput sinkOutput;
+
+Prepare properties to bind to a custom exchange and queue, such as:
+
+```
+spring:
+  cloud:
+    stream:
+      bindings:
+        sink-output:
+          destination: sink
+          producer:
+            requiredGroups: sink.output
+```
             
-            public void sendReceivedMessageId(final UUID messageId) {
-                sinkOutput.output().send(MessageBuilder.withPayload(messageId).build());
-                log.info("Acknowledgement for message with ID '{}' sent.", messageId);
-            }
-        
-        }
-        </code>
-    </li>
-</ol>
+Create a Channel Interface, such as:
+```
+public interface SinkOutput {
+
+    String OUTPUT = "sink-output";
+
+    @Output(OUTPUT)
+    MessageChannel output();
+
+}
+```
+
+Create a Service, such as:
+
+```
+@RequiredArgsConstructor
+@EnableBinding({SinkOutput.class})
+public class MessagingService {
+
+    private final SinkOutput sinkOutput;
+    
+    public void sendReceivedMessageId(final UUID messageId) {
+        sinkOutput.output().send(MessageBuilder.withPayload(messageId).build());
+        log.info("Acknowledgement for message with ID '{}' sent.", messageId);
+    }
+
+}
+```
 
 <h3 id="h3_input">Input:</h3>
-<ol>
-    <li>
-        Prepare properties to bind to a custom exchange and queue, such as:
-        <code>
-        spring:
-          cloud:
-            stream:
-              bindings:
-                sink-output:
-                  destination: sink
-                  group: sink.output
-        </code>
-    </li>
-    <li>
-        Create a Channel Interface, such as:
-        <code>
-        public interface SinkOutput {
-        
-            String INPUT = "sink-output";
-        
-            @Input(INPUT)
-            SubscribableChannel input();
-        
-        }
-        </code>
-    </li>
-    <li>
-        Create a Service, such as:
-        <code>
-        @RequiredArgsConstructor
-        @EnableBinding({SinkOutput.class })
-        public class MessagingService {
-        
-            private final Source source;
-            
-            @ServiceActivator(inputChannel = SinkOutput.INPUT)
-            public void handleMessage(final Message<UUID> message) {
-                log.info("Received acknowledgement message with value: {}", message.getPayload());
-                messagesSent.remove(messagesSent.stream().filter(m -> m.getId().equals(message.getPayload())).findAny().orElse(null));
-                log.info("messageSent cleaned. Remaining: {}", messagesSent.size());
-            }
-        
-        }
-        </code>
-    </li>
-</ol>
+
+Prepare properties to bind to a custom exchange and queue, such as:
+
+```
+spring:
+  cloud:
+    stream:
+      bindings:
+        sink-output:
+          destination: sink
+          group: sink.output
+```
+          
+Create a Channel Interface, such as:
+
+```
+public interface SinkOutput {
+
+    String INPUT = "sink-output";
+
+    @Input(INPUT)
+    SubscribableChannel input();
+
+}
+```
+
+Create a Service, such as:
+
+```
+@RequiredArgsConstructor
+@EnableBinding({SinkOutput.class })
+public class MessagingService {
+
+    private final Source source;
+    
+    @ServiceActivator(inputChannel = SinkOutput.INPUT)
+    public void handleMessage(final Message<UUID> message) {
+        log.info("Received acknowledgement message with value: {}", message.getPayload());
+        messagesSent.remove(messagesSent.stream().filter(m -> m.getId().equals(message.getPayload())).findAny().orElse(null));
+        log.info("messageSent cleaned. Remaining: {}", messagesSent.size());
+    }
+
+}
+```
 
 <h2 id="h2_notes">Notes</h2>
 <ul>
