@@ -1,0 +1,12 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        output:
+          destination: source
+          producer:
+            requiredGroups: source.output
+  rabbitmq:
+    username: guest
+    password: guest
+    addresses: localhost:5672

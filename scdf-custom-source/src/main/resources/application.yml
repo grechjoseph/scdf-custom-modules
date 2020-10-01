@@ -1,0 +1,10 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        sink-output:
+          destination: sink
+          group: sink.output
+
+my-properties:
+  initial-value: my property

@@ -1,0 +1,8 @@
+spring:
+  cloud:
+    stream:
+      bindings:
+        sink-output:
+          destination: sink
+          producer:
+            requiredGroups: sink.output
