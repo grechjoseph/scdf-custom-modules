@@ -16,6 +16,13 @@
         </ol>
     </li>
     <li><a href="#h2_creating_a_stream">Creating a Stream</a></li>
+    <li>
+        <a href="#h2_custom_queue_bindings">Custom Queue Bindings</a>
+        <ol>            
+            <li><a href="#h3_output">Output</a></li>
+            <li><a href="#h3_input">Input</a></li>
+        </ol>
+    </li>
     <li><a href="#h2_notes">Notes</a></li>
 </ol>
 
@@ -124,7 +131,7 @@ In order to send messages to custom exchanges and queues, rather than the defaul
 <ol>
     <li>
         Prepare properties to bind to a custom exchange and queue, such as
-        ```
+        <code>
         spring:
           cloud:
             stream:
@@ -133,11 +140,11 @@ In order to send messages to custom exchanges and queues, rather than the defaul
                   destination: sink
                   producer:
                     requiredGroups: sink.output
-        ```
+        </code>
     </li>
     <li>
         Create a Channel Interface, such as:
-        ```
+        <code>
         public interface SinkOutput {
         
             String OUTPUT = "sink-output";
@@ -146,11 +153,11 @@ In order to send messages to custom exchanges and queues, rather than the defaul
             MessageChannel output();
         
         }
-        ```
+        </code>
     </li>
     <li>
         Create a Service, such as:
-        ```
+        <code>
         @RequiredArgsConstructor
         @EnableBinding({SinkOutput.class})
         public class MessagingService {
@@ -163,7 +170,7 @@ In order to send messages to custom exchanges and queues, rather than the defaul
             }
         
         }
-        ```
+        </code>
     </li>
 </ol>
 
@@ -171,7 +178,7 @@ In order to send messages to custom exchanges and queues, rather than the defaul
 <ol>
     <li>
         Prepare properties to bind to a custom exchange and queue, such as:
-        ```
+        <code>
         spring:
           cloud:
             stream:
@@ -179,11 +186,11 @@ In order to send messages to custom exchanges and queues, rather than the defaul
                 sink-output:
                   destination: sink
                   group: sink.output
-        ```
+        </code>
     </li>
     <li>
         Create a Channel Interface, such as:
-        ```
+        <code>
         public interface SinkOutput {
         
             String INPUT = "sink-output";
@@ -192,11 +199,11 @@ In order to send messages to custom exchanges and queues, rather than the defaul
             SubscribableChannel input();
         
         }
-        ```
+        </code>
     </li>
     <li>
         Create a Service, such as:
-        ```
+        <code>
         @RequiredArgsConstructor
         @EnableBinding({SinkOutput.class })
         public class MessagingService {
@@ -211,7 +218,7 @@ In order to send messages to custom exchanges and queues, rather than the defaul
             }
         
         }
-        ```
+        </code>
     </li>
 </ol>
 
