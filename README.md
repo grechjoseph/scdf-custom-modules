@@ -3,6 +3,7 @@
 <h2>Contents</h2>
 <ol>
     <li><a href="#h2_summary">Summary</a></li>
+    <li><a href="#h2_profiles">Profiles</a></li>
     <li><a href="#h2_dependencies">Dependencies</a></li>
     <li><a href="#h2_plugins">Plugins</a></li>
     <li><a href="#h2_classes">Classes</a></li>
@@ -27,6 +28,11 @@ The three applications are:
     <li>scdf-custom-processor: Listens to stream message from scdf-custom-source, appends text to the existing message's value, and publishes back to the stream.</li>
     <li>scdf-custom-sink: Listens to stream message from scdf-custom-processor, and send an acknowledgement message through a custom RabbitMQ queue, expected to be handled by scdf-custom-source.</li>
 </ol>
+
+<h2 id="h2_profiles">Profiles</h2>
+<ul>
+    <li><b>dev</b>: Use this profile in order to run all three applications using a local RabbitMq instance (overridable property spring.rabbitmq.addresses).</li>
+</ul>
 
 <h2 id="h2_dependencies">Dependencies:</h2>
 <ul>
