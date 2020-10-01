@@ -202,7 +202,7 @@ Create a Service, such as:
 
 ```
 @RequiredArgsConstructor
-@EnableBinding({SinkOutput.class })
+@EnableBinding({SinkOutput.class})
 public class MessagingService {
 
     private final Source source;
