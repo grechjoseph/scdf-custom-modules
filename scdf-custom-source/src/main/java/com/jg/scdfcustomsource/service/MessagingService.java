@@ -1,8 +1,8 @@
 package com.jg.scdfcustomsource.service;
 
+import com.jg.scdfcustomsource.channels.Channels;
 import com.jg.scdfcustomsource.config.MyProperties;
 import com.jg.scdfcustomsource.dto.MyMessage;
-import com.jg.scdfcustomsource.queues.SinkOutput;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.cloud.stream.annotation.EnableBinding;
@@ -22,7 +22,7 @@ import java.util.UUID;
 @Service
 @EnableScheduling
 @RequiredArgsConstructor
-@EnableBinding({ Source.class, SinkOutput.class })
+@EnableBinding({ Source.class, Channels.class })
 public class MessagingService {
 
     private Set<MyMessage> messagesSent = new HashSet<>();
@@ -46,11 +46,11 @@ public class MessagingService {
      * Expected to be published by scdf-custom-sink.
      * @param message The message from the queue.
      */
-    @ServiceActivator(inputChannel = SinkOutput.INPUT)
+    @ServiceActivator(inputChannel = Channels.SINKOUTPUT)
     public void handleMessage(final Message<UUID> message) {
         log.info("Received acknowledgement message with value: {}", message.getPayload());
         messagesSent.remove(messagesSent.stream().filter(m -> m.getId().equals(message.getPayload())).findAny().orElse(null));
-        log.info("messageSent cleaned. Remaining: {}", messagesSent.size());
+        log.info("messagesSent collection cleaned. Remaining: {}", messagesSent.size());
     }
 
 }
