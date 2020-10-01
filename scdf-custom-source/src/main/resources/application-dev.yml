@@ -3,9 +3,9 @@ spring:
     stream:
       bindings:
         output:
-          destination: source
+          destination: source #can be anything
           producer:
-            requiredGroups: source.output
+            requiredGroups: source.output #can by anything
   rabbitmq:
     username: guest
     password: guest

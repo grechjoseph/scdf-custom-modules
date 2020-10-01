@@ -3,8 +3,8 @@ spring:
     stream:
       bindings:
         input:
-          destination: processor
-          group: processor.output
+          destination: processor #can by anything, but must match producer's definition.
+          group: processor.output #can by anything, but must match producer's definition.
   rabbitmq:
     username: guest
     password: guest
