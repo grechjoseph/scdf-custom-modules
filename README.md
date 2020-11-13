@@ -104,7 +104,7 @@ The three applications are:
 <ul>
     <li>Browse to <a href="http://localhost:9393/dashboard">http://localhost:9393/dashboard</a>.</li>
     <li>Navigate to Streams -> Create Stream.</li>
-    <li>Add Stream text: <b>{name provided at Registration of Source app} | {name provided at Registration of Processor app} | {name provided at Registration of Sink app}</b>.</li>
+    <li>Add Stream text: <b>{optionalAlias:}{name provided at Registration of Source app} | {optionalAlias:}{name provided at Registration of Processor app} | {optionalAlias:}{name provided at Registration of Sink app}</b>.</li>
     <li>Click <b>Create Stream(s) and name the stream.</b></li>
     <li>Next to the created stream in the list, click the Deploy (play) button.</li>
     <li>Open the Application Properties for the custom source application (should be showing 0/3 before configuring).</li>
